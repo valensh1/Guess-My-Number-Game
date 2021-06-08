@@ -5,6 +5,9 @@ let secretNumber = 0; // Creation of secretNumber variable which will be the num
 let score = 20; // Initial score of game
 let highScore = 0; // Initial value of highScore
 let lostMessage = '💥 You lost the game!';
+let gameOver = false;
+let lowNumber = 1; // Pick a number that is between starting with 1 and highNumber below.
+let highNumber = 20; // Pick a number that is between starting with 1 above and ending with number here.
 
 
 //---------------------------DOM NODE VARIABLES---------------------------------------------
@@ -13,6 +16,7 @@ let scoreDOM = document.querySelector('.score'); // Place in DOM where score is 
 let numberDOM = document.querySelector('.number'); // Place in DOM that displays secret number upon winning. When in game play it displays a ?
 let guessDOM = document.querySelector('.guess'); // Place in DOM where you input your number guess
 let highScoreDOM = document.querySelector('.highscore') // Place in DOM which display the high score
+let betweenDOM = document.querySelector('.between').textContent = `Between ${lowNumber} and ${highNumber}`; // Sets the between class in the DOM to display the numbers between that we chose in the variables lowNumber and highNumber above.
 
 
 //---------------------------------FUNCTIONS-------------------------------------------------
@@ -32,18 +36,30 @@ const checkHighScore = (score) => {
     }
 }
 
+// Function to check to see if guess is between numbers and give them message if their guess IS NOT between the numbers
+const guessCheck = (guess) => {
+    displayMessage(`Your guess is not between ${lowNumber} and ${highNumber}`);
+    guessDOM.style.backgroundColor = 'red'; // Change the b
+}
+
+const resetInputBackground = () => {
+    guessDOM.style.backgroundColor = ''; // Reset of background back to default which is the blackish color; Need to do this because if player guesses number not between lowNumber and highNumber the input box background color turns red and this function basically resets it back to its default.
+}
+
+
 // Function to display message to player whether you won, lost, or your guess is too high or too low.
 const displayMessage = (message) => {
     document.querySelector('.message').textContent = message;
 }
 
 // Function which runs everytime there is a guess
-const guess = () => {
-    const guess = Number(guessDOM.value); // Convert to number because by default all inputs by user in <input> tags are strings.
+const guessFunction = () => {
+    const guess = Number(document.querySelector('.guess').value); // Convert to number because by default all inputs by user in <input> tags are strings.
 
     if(!guess) {
+        
         displayMessage('⛔️ No Number!');
-
+    
         // Player Wins game
     } else if (guess === secretNumber) {
         displayMessage('🎉 Correct Number!');
@@ -52,7 +68,11 @@ const guess = () => {
         numberDOM.textContent = secretNumber; // Update DOM to display secret number upon player guessing the number correctly.
         numberDOM.style.width = '30rem'; 
         bodyDOM.style.backgroundColor = '#60b347'; // Must put color inside quotes; Style properties follow camelCase just like in Javascript and they always need to be put inside a string.
-        checkHighScore(score);
+        checkHighScore(score); // Checks for high score
+        gameOver = true; // Turns gameOver to true since player guessed the number
+
+    } else if (guess < lowNumber || guess > highNumber) {
+        guessCheck();
 
         // Guess is Wrong
     } else if (guess !== secretNumber){
@@ -60,7 +80,7 @@ const guess = () => {
         score -= 1; // Subtract one from score upon guessing incorrectly
         scoreDOM.textContent = score; // Update the DOM where score is displayed to display the current score
         displayMessage (guess > secretNumber ? '📈 Too High!' : '📉 Too Low!'); // Determines whether guess was too high or too low and displays this to player in the DOM
-        } else {
+        } else if (score === 0) {
             displayMessage(lostMessage); // If score goes down to 0 it displays this message to the player
         }
     }
@@ -69,17 +89,24 @@ const guess = () => {
 
 //-------------------------------EVENT LISTENERS----------------------------------------------
 // Check Guess (CLICK) - Event listener for when you click on Check button to see if your guess is correct.
-document.querySelector('.check').addEventListener('click', guess);
+document.querySelector('.check').addEventListener('click', () => {
+    resetInputBackground(); // Resets input background to default black background in case somebody turned the input to a red background by guessing numbers outside the lowNumber and highNumber.
+    gameOver === false ? guessFunction() : ''; // This makes sure that if game is already over then the scores, etc don't keep updating. NOTHING WORKS IF GAMEOVER IS === TRUE. If game is NOT OVER then it runs guessFunction which runs all the guess game logic.
+});
 
 // Check Guess (ENTER) - Event listener for when you hit ENTER button to see if your guess is correct.
 document.querySelector('.guess').addEventListener('keypress', (e) => {
-    if(e.key === 'Enter') {
-        guess();
-    }
+    resetInputBackground(); // Resets input background to default black background in case somebody turned the input to a red background by guessing numbers outside the lowNumber and highNumber.
+    if(gameOver === false) {
+        if(e.key === 'Enter') {
+            guessFunction(); // If game is NOT OVER and player hits Enter button then run guessFunction which runs through all guess game logic.
+        }
+    }  
 });
 
 // Reset Game Play - Event listener for when player clicks on Again button which resets game to play again
 document.querySelector('.again').addEventListener('click', () => {
+    gameOver = false;
     displayMessage('Start guessing...'); // Reset message back to Start Guessing....
     score = 20; // Reset score variable back to 20
     scoreDOM.textContent = score; // Reset score in DOM back to 20
