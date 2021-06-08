@@ -27,10 +27,9 @@ The challenge was to build out a full front-end application using HTML/CSS/Vanil
 
 ### Screenshot
 
-### Desktop Finished Version
+### Finished Version
 ![screenshot of finished project](Screenshot1.png?raw=true "screenshot of finished project")
 
-### Mobile Finished Version
 ![screenshot of finished project](Screenshot2.png?raw=true?raw=true "screenshot of finished project")
 
 ### Links
