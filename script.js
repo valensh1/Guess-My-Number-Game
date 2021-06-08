@@ -6,8 +6,8 @@ let score = 20; // Initial score of game
 let highScore = 0; // Initial value of highScore
 let lostMessage = '💥 You lost the game!';
 let gameOver = false;
-let lowNumber = 1; // Pick a number that is between starting with 1 and highNumber below.
-let highNumber = 20; // Pick a number that is between starting with 1 above and ending with number here.
+let lowNumber = 1; // Pick a number that is between lowNumber here and highNumber below.
+let highNumber = 20; // Pick a number that is between lowNumber above and highNumber here.
 
 
 //---------------------------DOM NODE VARIABLES---------------------------------------------
