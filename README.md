@@ -62,6 +62,7 @@ Looking forward to continuing to obtain valuable skills through the use of build
 ## Author
 
 - Portfolio Website - (https://shaun-valentine-portfolio.herokuapp.com/)
+- CodeWars Profile - (https://www.codewars.com/users/valensh1)
 - Frontend Mentor Profile - (https://www.frontendmentor.io/profile/valensh1)
 - Github - (https://github.com/valensh1)
 
